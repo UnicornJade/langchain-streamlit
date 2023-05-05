@@ -21,4 +21,4 @@ def translate(lang, role,text):
         template=template,
     )
     chain = LLMChain(llm=llm, prompt=prompt)
-    return chain.run(role,text).strip()
+    return chain.run(role=role,text=text).strip()
