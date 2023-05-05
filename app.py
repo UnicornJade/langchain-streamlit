@@ -65,39 +65,47 @@ with col1:
 #     st.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-nWvIHYPKxstvZXctI5Sz4aHwq/U2tCVfQSQJ3cwR6y/QTSeSy2IWzsgCUpRIav4+AJ89P4KjLkarNp1gB5wUw==" crossorigin="anonymous" referrerpolicy="no-referrer" />', unsafe_allow_html=True)
 
 st.markdown('-----')
-
-col1, col2 = st.columns(2)
-with col1:
-    language=st.selectbox("Language Setting",('English','简体中文'))
-with col2:
-    role=st.selectbox("Role Setting",('Jarvis','Default'))
-
-mod = st.sidebar.selectbox('输出样式',('chat','code-column'))
-if mod == 'chat':
-    if 'generated' not in st.session_state:
-        st.session_state['generated'] = []
-
-    if 'past' not in st.session_state:
-        st.session_state['past'] = []
+temp = st.sidebar.selectbox('🦄Choose Template',('Translate','PlanMaker'))
+if temp == 'PlanMaker':
+    st.title('PlanMaker')
+    st.write('PlanMaker is a web application that allows you to create a plan based on a template.')
     usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
     if usr_input:
-        # 在这里添加 spinner，表示正在计算
-        # with st.spinner('Loading...'):
-            # 模拟需要 5s 的计算时间
-            # time.sleep(5)
-        resp = translate(language,role,usr_input)
-        st.session_state.past.append(usr_input)
-        st.session_state.generated.append(resp)
-        if st.session_state['generated']:
-            for i in range(len(st.session_state['generated'])-1, -1, -1):
-                message(st.session_state["generated"][i], key=str(i))
-                message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
-    #     st.write(f'🧑🏻‍💻: {usr_input}')
-    #     with st.spinner('Loading...'):
-    #         st.write('🤖: {}'.format(resp))
-elif mod == 'code-column':
-    usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
-    st.markdown("**💡Translated👇**")
-    if usr_input:
-        resp = translate(language,role,usr_input)
-        st.code(resp, language='text')
+        st.write('💡Plan here👇')
+        resp = planMaker(usr_input)
+elif temp == 'Translate':
+    col1, col2 = st.columns(2)
+    with col1:
+        language=st.selectbox("Language Setting",('English','简体中文'))
+    with col2:
+        role=st.selectbox("Role Setting",('Jarvis','Default'))
+
+    mod = st.sidebar.selectbox('输出样式',('chat','code-column'))
+    if mod == 'chat':
+        if 'generated' not in st.session_state:
+            st.session_state['generated'] = []
+
+        if 'past' not in st.session_state:
+            st.session_state['past'] = []
+        usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
+        if usr_input:
+            # 在这里添加 spinner，表示正在计算
+            # with st.spinner('Loading...'):
+                # 模拟需要 5s 的计算时间
+                # time.sleep(5)
+            resp = translate(language,role,usr_input)
+            st.session_state.past.append(usr_input)
+            st.session_state.generated.append(resp)
+            if st.session_state['generated']:
+                for i in range(len(st.session_state['generated'])-1, -1, -1):
+                    message(st.session_state["generated"][i], key=str(i))
+                    message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+        #     st.write(f'🧑🏻‍💻: {usr_input}')
+        #     with st.spinner('Loading...'):
+        #         st.write('🤖: {}'.format(resp))
+    elif mod == 'code-column':
+        usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
+        st.markdown("**💡Translated👇**")
+        if usr_input:
+            resp = translate(language,role,usr_input)
+            st.code(resp, language='text')
