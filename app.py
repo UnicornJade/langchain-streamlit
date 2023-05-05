@@ -97,7 +97,7 @@ if mod == 'chat':
     #         st.write('🤖: {}'.format(resp))
 elif mod == 'code-column':
     usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
+    st.markdown("**💡Translated👇**")
     if usr_input:
         resp = translate(language,usr_input)
-        st.markdown("**💡Translated👇**")
         st.code(resp, language='text')
