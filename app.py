@@ -79,8 +79,8 @@ elif temp == 'Translate':
     col1, col2 = st.columns(2)
     with col1:
         language=st.selectbox("Language Setting",('English','简体中文'))
-    with col2:
-        role=st.selectbox("Role Setting",('Jarvis','Default'))
+#     with col2:
+#         role=st.selectbox("Role Setting",('Jarvis','Default'))
 
     mod = st.sidebar.selectbox('输出样式',('chat','code-column'))
     if mod == 'chat':
@@ -95,7 +95,7 @@ elif temp == 'Translate':
             # with st.spinner('Loading...'):
                 # 模拟需要 5s 的计算时间
                 # time.sleep(5)
-            resp = translate(language,role,usr_input)
+            resp = translate(language,usr_input)
             st.session_state.past.append(usr_input)
             st.session_state.generated.append(resp)
             if st.session_state['generated']:
@@ -109,5 +109,5 @@ elif temp == 'Translate':
         usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
         st.markdown("**💡Translated👇**")
         if usr_input:
-            resp = translate(language,role,usr_input)
+            resp = translate(language,usr_input)
             st.code(resp, language='text')
