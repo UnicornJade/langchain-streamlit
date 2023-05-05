@@ -1,15 +1,17 @@
 import os
+
+import streamlit
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-
+openai_api_key = "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"
+os.environ["OPENAI_API_KEY"] = openai_api_key
 
 """----------------------------------------------------------------"""
 
-
-def translate(lang, role,text):
-    en2zh = "Hi,my friend {role}.Please translate english to chinese:{text}"
-    zh2en = "Hi,my friend {role}.Please translate chinese to english:{text}"
+def translate(lang, text):
+    en2zh = "Please translate english to chinese:{text}"
+    zh2en = "Please translate chinese to english:{text}"
     if lang == 'English':
         template = zh2en
     elif lang == '简体中文':
@@ -17,8 +19,18 @@ def translate(lang, role,text):
 
     llm = OpenAI(temperature=0)
     prompt = PromptTemplate(
-        input_variables=["role","text"],  # 提示词·可控变量
+        input_variables=["text"],  # 提示词·可控变量
         template=template,
     )
     chain = LLMChain(llm=llm, prompt=prompt)
-    return chain.run(role=role,text=text).strip()
+    return chain.run(text).strip()
+
+def planMaker(content):
+    template = """You are a coach. You will be responsible to me to the end. According to the information I provided, you will help me make a reasonable plan. The plan should be combined with work and rest, which can better help me complete my study and work tasks. Your answer should be as short and clear as possible and in Chinese.Here are my latest plans：'{content}'"""
+    llm = OpenAI(temperature=0.9)
+    prompt = PromptTemplate(
+        input_variables=["content"],  # 提示词·可控变量
+        template=template,
+    )
+    chain = LLMChain(llm=llm, prompt=prompt)
+    return chain.run(content).strip()
