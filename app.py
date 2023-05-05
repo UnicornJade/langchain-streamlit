@@ -73,7 +73,8 @@ if temp == 'PlanMaker':
     if usr_input:
         st.write('💡Plan here👇')
         resp = planMaker(usr_input)
-        st.code(resp, language='text')
+        with st.spinner('Loading...'):
+            st.code(resp, language='text')
 elif temp == 'Translate':
     col1, col2 = st.columns(2)
     with col1:
