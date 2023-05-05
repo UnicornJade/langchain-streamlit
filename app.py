@@ -85,7 +85,7 @@ if mod == 'chat':
         # with st.spinner('Loading...'):
             # 模拟需要 5s 的计算时间
             # time.sleep(5)
-        resp = translate(language,usr_input)
+        resp = translate(language,role,usr_input)
         st.session_state.past.append(usr_input)
         st.session_state.generated.append(resp)
         if st.session_state['generated']:
@@ -99,5 +99,5 @@ elif mod == 'code-column':
     usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
     st.markdown("**💡Translated👇**")
     if usr_input:
-        resp = translate(language,usr_input)
+        resp = translate(language,role,usr_input)
         st.code(resp, language='text')
