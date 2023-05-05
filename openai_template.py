@@ -2,8 +2,7 @@ import os
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-openai_api_key = "sk-xxx"
-os.environ["OPENAI_API_KEY"] = openai_api_key
+
 
 """----------------------------------------------------------------"""
 
