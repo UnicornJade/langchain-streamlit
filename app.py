@@ -3,6 +3,8 @@ import os,time
 import streamlit as st
 from openai_template import translate
 import pandas as pd
+from streamlit_chat import message
+
 st.set_page_config(page_title='Jarvis', page_icon="🤖",)
 st.header('Hello My Master~')
 
