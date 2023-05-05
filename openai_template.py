@@ -1,11 +1,8 @@
 import os
-
 import streamlit
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-openai_api_key = "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"
-os.environ["OPENAI_API_KEY"] = openai_api_key
 
 """----------------------------------------------------------------"""
 
