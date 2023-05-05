@@ -71,25 +71,32 @@ with col1:
     language=st.selectbox("Language Setting",('English','简体中文'))
 with col2:
     role=st.selectbox("Role Setting",('Jarvis','Default'))
-if 'generated' not in st.session_state:
-    st.session_state['generated'] = []
 
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
-if usr_input:
-    # 在这里添加 spinner，表示正在计算
-    # with st.spinner('Loading...'):
-        # 模拟需要 5s 的计算时间
-        # time.sleep(5)
-    resp = translate(language,usr_input)
-    st.session_state.past.append(usr_input)
-    st.session_state.generated.append(resp)
-    if st.session_state['generated']:
-        for i in range(len(st.session_state['generated'])-1, -1, -1):
-            message(st.session_state["generated"][i], key=str(i))
-            message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
-#     st.write(f'🧑🏻‍💻: {usr_input}')
-#     with st.spinner('Loading...'):
-#         st.write('🤖: {}'.format(resp))
+mod = st.sidebar.selectbox('输出样式',('chat','code-column'))
+if mod == 'chat':
+    if 'generated' not in st.session_state:
+        st.session_state['generated'] = []
 
+    if 'past' not in st.session_state:
+        st.session_state['past'] = []
+    usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
+    if usr_input:
+        # 在这里添加 spinner，表示正在计算
+        # with st.spinner('Loading...'):
+            # 模拟需要 5s 的计算时间
+            # time.sleep(5)
+        resp = translate(language,usr_input)
+        st.session_state.past.append(usr_input)
+        st.session_state.generated.append(resp)
+        if st.session_state['generated']:
+            for i in range(len(st.session_state['generated'])-1, -1, -1):
+                message(st.session_state["generated"][i], key=str(i))
+                message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+    #     st.write(f'🧑🏻‍💻: {usr_input}')
+    #     with st.spinner('Loading...'):
+    #         st.write('🤖: {}'.format(resp))
+elif mod == 'code-column':
+    usr_input = st.text_input(label='🔗 User Input', placeholder='Please input...', key='prompt')
+    if usr_input:
+        resp = translate(language,usr_input)
+        st.code(resp, language='text')
