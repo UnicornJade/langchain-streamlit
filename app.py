@@ -116,7 +116,7 @@ elif temp == 'TTS':
     st.title('TTS')
     tts_text = st.text_input(label='Text To Synthesize:',placeholder='Please input...', key='tts')
 
-    speech_config = speechsdk.SpeechConfig(subscription=os.environ["SPEECH_API"], region=os.environ["SPEECH_REGION"])
+    speech_config = speechsdk.SpeechConfig(subscription=st.secrets["SPEECH_API"], region=st.secrets["SPEECH_REGION"])
     # 由于是远程服务器,无法设置默认扬声器,所以删除audio_config
 
     # The language of the voice that speaks.
