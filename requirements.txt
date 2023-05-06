@@ -4,5 +4,4 @@ pandas
 openai
 streamlit_chat
 azure-cognitiveservices-speech
-libssl-dev
-libasound2
+libssl1.1 libasound2
