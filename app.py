@@ -114,23 +114,26 @@ elif temp == 'Translate':
             st.code(resp, language='text')
 elif temp == 'TTS':
     st.title('TTS')
-    tts_text = st.text_input(label='🔗Text To Synthesize👇',placeholder='Please input...', key='tts')
+    tts_text = st.text_input(label='Text To Synthesize:',placeholder='Please input...', key='tts')
 
     speech_config = speechsdk.SpeechConfig(subscription=os.environ["SPEECH_API"], region=os.environ["SPEECH_REGION"])
-    audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+    # 由于是远程服务器,无法设置默认扬声器,所以删除audio_config
 
     # The language of the voice that speaks.
-    speech_config.speech_synthesis_voice_name='zh-CN-XiaochenNeural'
+    speech_config.speech_synthesis_voice_name='zh-CN-XiaochenNeural'  
 
-    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
 
-    # Get text from the console and synthesize to the default speaker.
-    # print("Enter some text that you want to speak >")
-    text = st.text_input("请输入要转换的文字:")
-    if text:
-        #之前的语音合成代码...
-        speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
-        if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            audio_data = speech_synthesis_result.audio_data
-            # 在streamlit中播放音频
-            st.audio(audio_data)
+    if st.button('Submit'): 
+        # Get text from the console and synthesize 
+        text = tts_text 
+        if text:
+            speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
+            if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+                audio_data = speech_synthesis_result.audio_data  
+                # Download the audio file         
+                with open('speech.wav', 'wb') as f:
+                    f.write(audio_data)
+
+                # Display the audio file
+                st.audio('speech.wav')
