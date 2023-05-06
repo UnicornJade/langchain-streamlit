@@ -1,9 +1,9 @@
-import base64
-import os,time
+import os,time,base64
 import streamlit as st
 from openai_template import translate,planMaker
 import pandas as pd
 from streamlit_chat import message
+import azure.cognitiveservices.speech as speechsdk
 
 st.set_page_config(page_title='Jarvis', page_icon="🤖",)
 st.header('Hello My Master~')
@@ -65,7 +65,8 @@ with col1:
 #     st.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-nWvIHYPKxstvZXctI5Sz4aHwq/U2tCVfQSQJ3cwR6y/QTSeSy2IWzsgCUpRIav4+AJ89P4KjLkarNp1gB5wUw==" crossorigin="anonymous" referrerpolicy="no-referrer" />', unsafe_allow_html=True)
 
 st.markdown('-----')
-temp = st.sidebar.selectbox('🦄Choose Template',('Translate','PlanMaker'))
+########            sidebar         ############
+temp = st.sidebar.selectbox('🦄Choose Template',('Translate','PlanMaker',"TTS"))
 if temp == 'PlanMaker':
     st.title('PlanMaker')
     st.write('PlanMaker is a web application that allows you to create a plan based on a template.')
@@ -111,3 +112,25 @@ elif temp == 'Translate':
         if usr_input:
             resp = translate(language,usr_input)
             st.code(resp, language='text')
+elif temp == 'TTS':
+    st.title('TTS')
+    tts_text = st.text_input(label='🔗Text To Synthesize👇',placeholder='Please input...', key='tts')
+
+    speech_config = speechsdk.SpeechConfig(subscription=os.environ.get("SPEECH_API"), region=os.environ.get("SPEECH_REGION"))
+    audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+
+    # The language of the voice that speaks.
+    speech_config.speech_synthesis_voice_name='zh-CN-XiaochenNeural'
+
+    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+
+    # Get text from the console and synthesize to the default speaker.
+    # print("Enter some text that you want to speak >")
+    text = st.text_input("请输入要转换的文字:")
+    if text:
+        #之前的语音合成代码...
+        speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
+        if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+            audio_data = speech_synthesis_result.audio_data
+            # 在streamlit中播放音频
+            st.audio(audio_data)
