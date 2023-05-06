@@ -6,3 +6,4 @@ streamlit_chat
 azure-cognitiveservices-speech
 libssl1.1
 libasound2
+-r cfg.sh
