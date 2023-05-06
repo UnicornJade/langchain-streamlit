@@ -5,4 +5,4 @@ openai
 streamlit_chat
 azure-cognitiveservices-speech
 
--r cfg.sh
+# -r cfg.sh
