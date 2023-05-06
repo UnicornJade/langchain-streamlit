@@ -116,7 +116,7 @@ elif temp == 'TTS':
     st.title('TTS')
     tts_text = st.text_input(label='🔗Text To Synthesize👇',placeholder='Please input...', key='tts')
 
-    speech_config = speechsdk.SpeechConfig(subscription=os.environ.get("SPEECH_API"), region=os.environ.get("SPEECH_REGION"))
+    speech_config = speechsdk.SpeechConfig(subscription=os.environ["SPEECH_API"], region=os.environ["SPEECH_REGION"])
     audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
 
     # The language of the voice that speaks.
